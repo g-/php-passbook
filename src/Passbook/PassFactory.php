@@ -13,7 +13,6 @@ namespace Passbook;
 
 use ZipArchive;
 use SplFileObject;
-use Passbook\PassInterface;
 use Passbook\Certificate\P12;
 use Passbook\Certificate\WWDR;
 use Passbook\Exception\FileException;
@@ -57,13 +56,13 @@ class PassFactory
 
     /**
      * P12 file
-     * @var Passbook\Certificate\P12
+     * @var \Passbook\Certificate\P12
      */
     protected $p12;
 
     /**
      * WWDR file
-     * @var Passbook\Certificate\WWDR
+     * @var \Passbook\Certificate\WWDR
      */
     protected $wwdr;
 
@@ -127,7 +126,7 @@ class PassFactory
     /**
      * Serialize pass
      *
-     * @param  Passbook\PassInterface $pass
+     * @param  \Passbook\PassInterface $pass
      * @return string
      */
     public static function serialize(PassInterface $pass)
@@ -138,7 +137,7 @@ class PassFactory
     /**
      * Creates a pkpass file
      *
-     * @param  Passbook\PassInterface $pass
+     * @param  \Passbook\PassInterface $pass
      * @throws FileException          If an IO error occurred
      * @return SplFileObject
      */
