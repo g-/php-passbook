@@ -143,6 +143,10 @@ class PassFactory
      */
     public function package(PassInterface $pass)
     {
+        if ($pass->getSerialNumber() == '') {
+            throw new \InvalidArgumentException('Pass must have a serial number to be packaged');
+        }
+
         $pass->setPassTypeIdentifier($this->passTypeIdentifier);
         $pass->setTeamIdentifier($this->teamIdentifier);
         $pass->setOrganizationName($this->organizationName);
