@@ -12,8 +12,6 @@
 namespace Passbook\Type;
 
 use Passbook\Pass;
-use JMS\Serializer\Annotation\Exclude;
-use JMS\Serializer\Annotation\SerializedName;
 use Passbook\Pass\Structure;
 
 /**
@@ -25,14 +23,12 @@ class BoardingPass extends Pass
 {
     /**
      * Pass type
-     * @Exclude
      * @var string
      */
     protected $type = 'boardingPass';
 
     /**
      * Pass structure
-     * @SerializedName(value="boardingPass")
      * @var Structure
      */
     protected $structure;

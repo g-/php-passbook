@@ -12,8 +12,6 @@
 namespace Passbook\Type;
 
 use Passbook\Pass;
-use JMS\Serializer\Annotation\Exclude;
-use JMS\Serializer\Annotation\SerializedName;
 use Passbook\Pass\Structure;
 
 /**
@@ -25,14 +23,12 @@ class Generic extends Pass
 {
     /**
      * Pass type
-     * @Exclude
      * @var string
      */
     protected $type = 'generic';
 
     /**
      * Pass structure
-     * @SerializedName(value="generic")
      * @var Structure
      */
     protected $structure;
