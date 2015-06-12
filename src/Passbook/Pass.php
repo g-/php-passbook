@@ -94,6 +94,15 @@ class Pass implements PassInterface
     protected $relevantDate;
 
     /**
+     * Maximum distance in meters from a relevant latitude and longitude that
+     * the pass is relevant. This number is compared to the pass’s default
+     * distance and the smaller value is used.
+     * Available in iOS 7.0.
+     * @var int
+     */
+    protected $maxDistance;
+
+    /**
      * Date and time when the pass becomes relevant.
      * For example, the start time of a movie.
      * @var Barcode
@@ -205,6 +214,7 @@ class Pass implements PassInterface
             'formatVersion',
             'beacons',
             'locations',
+            'maxDistance',
             'relevantDate',
             'barcode',
             'backgroundColor',
@@ -425,6 +435,24 @@ class Pass implements PassInterface
     public function getRelevantDate()
     {
         return $this->relevantDate;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMaxDistance(\DateTime $maxDistance)
+    {
+        $this->maxDistance = $maxDistance;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMaxDistance()
+    {
+        return $this->maxDistance;
     }
 
     /**
