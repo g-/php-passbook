@@ -21,7 +21,7 @@ interface StructureInterface
     /**
      * Adds header field
      *
-     * @param Field
+     * @param FieldInterface $headerField
      */
     public function addHeaderField(FieldInterface $headerField);
 
@@ -35,7 +35,7 @@ interface StructureInterface
     /**
      * Adds primary field
      *
-     * @param Field
+     * @param FieldInterface $primaryField
      */
     public function addPrimaryField(FieldInterface $primaryField);
 
@@ -49,7 +49,7 @@ interface StructureInterface
     /**
      * Adds secondary field
      *
-     * @param Field
+     * @param FieldInterface $secondaryField
      */
     public function addSecondaryField(FieldInterface $secondaryField);
 
@@ -63,7 +63,7 @@ interface StructureInterface
     /**
      * Adds auxiliary field
      *
-     * @param Field
+     * @param FieldInterface $auxiliaryField
      */
     public function addAuxiliaryField(FieldInterface $auxiliaryField);
 
@@ -77,7 +77,7 @@ interface StructureInterface
     /**
      * Adds back field
      *
-     * @param Field
+     * @param FieldInterface $backField
      */
     public function addBackField(FieldInterface $backField);
 

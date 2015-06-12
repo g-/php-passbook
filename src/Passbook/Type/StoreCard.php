@@ -14,6 +14,7 @@ namespace Passbook\Type;
 use Passbook\Pass;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\SerializedName;
+use Passbook\Pass\Structure;
 
 /**
  * StoreCard

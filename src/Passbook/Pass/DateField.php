@@ -71,6 +71,7 @@ class DateField extends Field
     /**
      * Must be one of PKDateStyle const
      * @param string $dateStyle
+     * @return $this
      */
     public function setDateStyle($dateStyle)
     {
@@ -89,6 +90,7 @@ class DateField extends Field
 
     /**
      * @param boolean $ignoresTimeZone
+     * @return $this
      */
     public function setIgnoresTimeZone($ignoresTimeZone)
     {
@@ -107,6 +109,7 @@ class DateField extends Field
 
     /**
      * @param boolean $isRelative
+     * @return $this
      */
     public function setIsRelative($isRelative)
     {
@@ -126,6 +129,7 @@ class DateField extends Field
     /**
      * Must be one of PKDateStyle const
      * @param string $timeStyle
+     * @return $this
      */
     public function setTimeStyle($timeStyle)
     {

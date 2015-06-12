@@ -86,6 +86,7 @@ class PassFactory
     /**
      * Set outputPath
      * @param string
+     * @return $this
      */
     public function setOutputPath($outputPath)
     {
@@ -97,6 +98,7 @@ class PassFactory
     /**
      * Get outputPath
      * @return string
+     * @return $this
      */
     public function getOutputPath()
     {
@@ -106,6 +108,7 @@ class PassFactory
     /**
      * Set overwrite
      * @param boolean
+     * @return $this
      */
     public function setOverwrite($overwrite)
     {
@@ -240,8 +243,8 @@ class PassFactory
 
     /**
      * Recursive folder remove
-     *
      * @param string $dir
+     * @return bool
      */
     private function rrmdir($dir)
     {

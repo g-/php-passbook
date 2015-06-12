@@ -11,6 +11,8 @@
 
 namespace Passbook;
 
+use Passbook\Pass\Barcode;
+use Passbook\Pass\Structure;
 use Passbook\Pass\StructureInterface;
 use Passbook\Pass\BeaconInterface;
 use Passbook\Pass\LocationInterface;
@@ -89,7 +91,7 @@ class Pass implements PassInterface
     /**
      * Date and time when the pass becomes relevant.
      * For example, the start time of a movie.
-     * @var DateTime
+     * @var \DateTime
      */
     protected $relevantDate;
 
@@ -173,7 +175,7 @@ class Pass implements PassInterface
     
     /**
      * Date and time when the pass expires.
-     * @var DateTime
+     * @var \DateTime
      */
     protected $expirationDate;
 

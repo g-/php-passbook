@@ -11,6 +11,7 @@
 
 namespace Passbook;
 
+use Passbook\Pass\Image;
 use Passbook\Pass\StructureInterface;
 use Passbook\Pass\BeaconInterface;
 use Passbook\Pass\LocationInterface;
@@ -83,7 +84,7 @@ interface PassInterface
     public function addImage(ImageInterface $image);
 
     /**
-     * {@inheritdoc}
+     * @return Image[]
      */
     public function getImages();
 

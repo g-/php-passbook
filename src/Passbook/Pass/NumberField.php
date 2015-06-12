@@ -61,6 +61,7 @@ class NumberField extends Field {
 
 	/**
 	 * @param mixed $currencyCode
+     * @return $this
 	 */
 	public function setCurrencyCode($currencyCode)
 	{
@@ -78,6 +79,7 @@ class NumberField extends Field {
 
 	/**
 	 * @param string $numberStyle
+     * @return $this
 	 */
 	public function setNumberStyle($numberStyle)
 	{
