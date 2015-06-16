@@ -56,13 +56,13 @@ class PassFactory
 
     /**
      * P12 file
-     * @var \Passbook\Certificate\P12
+     * @var \Passbook\Certificate\P12Interface
      */
     protected $p12;
 
     /**
      * WWDR file
-     * @var \Passbook\Certificate\WWDR
+     * @var \Passbook\Certificate\WWDRInterface
      */
     protected $wwdr;
 
