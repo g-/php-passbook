@@ -18,27 +18,27 @@ use Passbook\Type\StoreCard;
 class PassTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var PassInterface
+     * @var BoardingPass
      */
     protected $boardingPass;
 
     /**
-     * @var PassInterface
+     * @var Coupon
      */
     protected $coupon;
 
     /**
-     * @var PassInterface
+     * @var EventTicket
      */
     protected $eventTicket;
 
     /**
-     * @var PassInterface
+     * @var Generic
      */
     protected $generic;
 
     /**
-     * @var PassInterface
+     * @var StoreCard
      */
     protected $storeCard;
 
@@ -239,6 +239,13 @@ class PassTest extends \PHPUnit_Framework_TestCase
             ->setType('generic')
             ->setSuppressStripShine(false)
         ;
+    }
+
+    public function testPassWithEmptyStructureSerializesAsEmptyObject()
+    {
+        $this->storeCard->setStructure(new Structure());
+        $array = $this->storeCard->toArray();
+        self::assertTrue(is_object($array['storeCard']));
     }
 
     /**
