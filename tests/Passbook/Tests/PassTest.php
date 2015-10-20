@@ -43,6 +43,11 @@ class PassTest extends \PHPUnit_Framework_TestCase
     protected $storeCard;
 
     /**
+     * @var Pass
+     */
+    protected $pass;
+
+    /**
      * Boarding Pass
      */
     public function testBoardingPass()
@@ -238,7 +243,24 @@ class PassTest extends \PHPUnit_Framework_TestCase
             ->setAuthenticationToken('123')
             ->setType('generic')
             ->setSuppressStripShine(false)
+            ->setAppLaunchURL('http://app.launch.url')
+            ->addAssociatedStoreIdentifier(123)
         ;
+        
+        $properties = array(
+            'webServiceURL',
+            'foregroundColor',
+            'backgroundColor',
+            'labelColor',
+            'authenticationToken',
+            'suppressStripShine',
+            'associatedStoreIdentifiers',
+            'appLaunchURL',
+        );
+        $array = $this->pass->toArray();
+        foreach ($properties as $property) {
+            $this->assertTrue(isset($array[$property]));
+        }
     }
 
     public function testPassWithEmptyStructureSerializesAsEmptyObject()

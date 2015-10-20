@@ -11,6 +11,7 @@
 
 namespace Passbook;
 
+use DateTime;
 use Passbook\Pass\Barcode;
 use Passbook\Pass\Structure;
 use Passbook\Pass\StructureInterface;
@@ -64,7 +65,7 @@ class Pass implements PassInterface
 
     /**
      * Pass images
-     * @var string
+     * @var ImageInterface[]
      */
     protected $images = array();
 
@@ -77,7 +78,7 @@ class Pass implements PassInterface
     /**
      * A list of iTunes Store item identifiers
      * (also known as Adam IDs) for the associated apps.
-     * @var array array of numbers
+     * @var int[]
      */
     protected $associatedStoreIdentifiers = array();
 
@@ -193,7 +194,7 @@ class Pass implements PassInterface
 	 * @var string
 	 */
 	protected $appLaunchURL;
-    
+
     public function __construct($serialNumber, $description)
     {
         // Required
@@ -257,7 +258,9 @@ class Pass implements PassInterface
                 }
             }
         }
-
+        if ($this->getAssociatedStoreIdentifiers()) {
+            $array['associatedStoreIdentifiers'] = $this->getAssociatedStoreIdentifiers();
+        }
         return $array;
     }
 
