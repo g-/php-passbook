@@ -16,7 +16,6 @@ use SplFileObject;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Exception;
-use Passbook\PassInterface;
 use Passbook\Certificate\P12;
 use Passbook\Certificate\WWDR;
 use Passbook\Exception\FileException;
@@ -69,6 +68,11 @@ class PassFactory
      * @var \Passbook\Certificate\WWDRInterface
      */
     protected $wwdr;
+
+    /**
+     * @var bool - skip signing the pass; should only be used for testing
+     */
+    protected $skipSignature;
 
     /**
      * Pass file extension
@@ -131,6 +135,31 @@ class PassFactory
     }
 
     /**
+     * Set skip signature
+     *
+     * When set, the pass will not be signed when packaged. This should only
+     * be used for testing.
+     *
+     * @param boolean
+     * @return $this
+     */
+    public function setSkipSignature($skipSignature)
+    {
+        $this->skipSignature = $skipSignature;
+
+        return $this;
+    }
+
+    /**
+     * Get overwrite
+     * @return boolean
+     */
+    public function getSkipSignature()
+    {
+        return $this->skipSignature;
+    }
+
+    /**
      * Serialize pass
      *
      * @param  \Passbook\PassInterface $pass
@@ -154,9 +183,7 @@ class PassFactory
             throw new \InvalidArgumentException('Pass must have a serial number to be packaged');
         }
 
-        $pass->setPassTypeIdentifier($this->passTypeIdentifier);
-        $pass->setTeamIdentifier($this->teamIdentifier);
-        $pass->setOrganizationName($this->organizationName);
+        $this->populateRequiredInformation($pass);
 
         // Serialize pass
         $json = self::serialize($pass);
@@ -225,13 +252,43 @@ class PassFactory
         file_put_contents($manifestJSONFile, json_encode($manifest , JSON_UNESCAPED_SLASHES));
 
         // Signature
+        $this->sign($passDir, $manifestJSONFile);
+
+        // Zip pass
+        $zipFile = $outputPath . $pass->getSerialNumber() . self::PASS_EXTENSION;
+        $this->zip($passDir, $zipFile);
+
+        // Remove temporary pass directory
+        $this->rrmdir($passDir);
+
+        return new SplFileObject($zipFile);
+    }
+
+    /**
+     * @param $passDir
+     * @param $manifestJSONFile
+     */
+    private function sign($passDir, $manifestJSONFile)
+    {
+        if ($this->getSkipSignature()) {
+            return;
+        }
+
         $signatureFile = $passDir . 'signature';
         $p12 = file_get_contents($this->p12->getRealPath());
         $certs = array();
         if (openssl_pkcs12_read($p12, $certs, $this->p12->getPassword()) == true) {
             $certdata = openssl_x509_read($certs['cert']);
             $privkey = openssl_pkey_get_private($certs['pkey'], $this->p12->getPassword());
-            openssl_pkcs7_sign($manifestJSONFile, $signatureFile, $certdata, $privkey, array(), PKCS7_BINARY | PKCS7_DETACHED, $this->wwdr->getRealPath());
+            openssl_pkcs7_sign(
+                $manifestJSONFile,
+                $signatureFile,
+                $certdata,
+                $privkey,
+                array(),
+                PKCS7_BINARY | PKCS7_DETACHED,
+                $this->wwdr->getRealPath()
+            );
             // Get signature content
             $signature = @file_get_contents($signatureFile);
             // Check signature content
@@ -252,17 +309,7 @@ class PassFactory
         } else {
             throw new FileException("Error reading certificate file");
         }
-
-        // Zip pass
-        $zipFile = $outputPath . $pass->getSerialNumber() . self::PASS_EXTENSION;
-        $this->zip($passDir, $zipFile);
-
-        // Remove temporary pass directory
-        $this->rrmdir($passDir);
-
-        return new SplFileObject($zipFile);
     }
-
 
     /**
      * Creates a zip of a directory including all sub directories (recursive)
@@ -330,4 +377,23 @@ class PassFactory
 
         return rmdir($dir);
     }
+
+    /**
+     * @param PassInterface $pass
+     */
+    private function populateRequiredInformation(PassInterface $pass)
+    {
+        if (!$pass->getPassTypeIdentifier()) {
+            $pass->setPassTypeIdentifier($this->passTypeIdentifier);
+        }
+
+        if (!$pass->getTeamIdentifier()) {
+            $pass->setTeamIdentifier($this->teamIdentifier);
+        }
+
+        if (!$pass->getOrganizationName()) {
+            $pass->setOrganizationName($this->organizationName);
+        }
+    }
+
 }
