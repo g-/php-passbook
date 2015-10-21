@@ -207,8 +207,8 @@ class Pass implements PassInterface
         $array = array();
 
         // Structure
-        if ($structure = $this->getStructure()) {
-            $array[$this->getType()] = $structure->toArray();
+        if ($this->getStructure()) {
+            $array[$this->getType()] = $this->getStructure()->toArray();
         }
 
         $properties = array(
@@ -269,7 +269,7 @@ class Pass implements PassInterface
      */
     public function setSerialNumber($serialNumber)
     {
-        $this->serialNumber = $serialNumber;
+        $this->serialNumber = strval($serialNumber);
 
         return $this;
     }
@@ -279,7 +279,7 @@ class Pass implements PassInterface
      */
     public function getSerialNumber()
     {
-        return strval($this->serialNumber);
+        return $this->serialNumber;
     }
 
     /**
