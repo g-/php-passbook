@@ -12,7 +12,6 @@
 namespace Passbook;
 
 use DateTime;
-use Passbook\Pass\Barcode;
 use Passbook\Pass\Structure;
 use Passbook\Pass\StructureInterface;
 use Passbook\Pass\BeaconInterface;
@@ -106,9 +105,15 @@ class Pass implements PassInterface
     protected $maxDistance;
 
     /**
-     * Date and time when the pass becomes relevant.
-     * For example, the start time of a movie.
-     * @var Barcode
+     * Barcodes available to be displayed of iOS 9 and later. The system uses
+     * the first valid barcode in the array.
+     * @var BarcodeInterface[]
+     */
+    protected $barcodes = array();
+
+    /**
+     * Barcode to be displayed for iOS 8 and earlier.
+     * @var BarcodeInterface
      */
     protected $barcode;
 
@@ -220,6 +225,7 @@ class Pass implements PassInterface
             'maxDistance',
             'relevantDate',
             'barcode',
+            'barcodes',
             'backgroundColor',
             'foregroundColor',
             'labelColor',
@@ -468,6 +474,7 @@ class Pass implements PassInterface
     public function setBarcode(BarcodeInterface $barcode)
     {
         $this->barcode = $barcode;
+        array_unshift($this->barcodes, $barcode);
 
         return $this;
     }
@@ -478,6 +485,28 @@ class Pass implements PassInterface
     public function getBarcode()
     {
         return $this->barcode;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addBarcode(BarcodeInterface $barcode)
+    {
+        $this->barcodes[] = $barcode;
+
+        if (empty($this->barcode)) {
+            $this->barcode = $barcode;
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBarcodes()
+    {
+        return $this->barcodes;
     }
 
     /**
