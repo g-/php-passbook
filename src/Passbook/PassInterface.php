@@ -12,6 +12,7 @@
 namespace Passbook;
 
 use Passbook\Pass\Image;
+use Passbook\Pass\LocalizationInterface;
 use Passbook\Pass\StructureInterface;
 use Passbook\Pass\BeaconInterface;
 use Passbook\Pass\LocationInterface;
@@ -263,4 +264,16 @@ interface PassInterface extends ArrayableInterface
      * {@inheritdoc}
      */
     public function getOrganizationName();
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addLocalization(LocalizationInterface $localization);
+
+    /**
+     * {@inheritdoc}
+     * @return LocalizationInterface[]
+     */
+    public function getLocalizations();
 }

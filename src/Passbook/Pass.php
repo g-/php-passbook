@@ -13,6 +13,7 @@ namespace Passbook;
 
 use DateTime;
 use Passbook\Pass\Structure;
+use Passbook\Pass\LocalizationInterface;
 use Passbook\Pass\StructureInterface;
 use Passbook\Pass\BeaconInterface;
 use Passbook\Pass\LocationInterface;
@@ -87,6 +88,12 @@ class Pass implements PassInterface
      * @var array
      */
     protected $locations = array();
+
+    /**
+     * List of localizations
+     * @var array
+     */
+    protected $localizations = array();
 
     /**
      * Date and time when the pass becomes relevant.
@@ -178,7 +185,7 @@ class Pass implements PassInterface
      * @var string
      */
     protected $organizationName;
-    
+
     /**
      * Date and time when the pass expires.
      * @var \DateTime
@@ -190,9 +197,9 @@ class Pass implements PassInterface
      * @var boolean
      */
     protected $voided;
-	
+
 	/**
-	 * 
+	 *
 	 * A URL to be passed to the associated app when launching it.
 	 * The app receives this URL in the application:didFinishLaunchingWithOptions: and application:handleOpenURL: methods of its app delegate.
 	 * If this key is present, the associatedStoreIdentifiers key must also be present.
@@ -238,7 +245,8 @@ class Pass implements PassInterface
             'organizationName',
             'expirationDate',
             'voided',
-            'appLaunchURL'
+            'appLaunchURL',
+            'associatedStoreIdentifiers',
         );
         foreach ($properties as $property) {
             $method = 'is'.ucfirst($property);
@@ -259,8 +267,12 @@ class Pass implements PassInterface
             } elseif (is_array($val)) {
                 // Array
                 foreach ($val as $v) {
-                    /* @var ArrayableInterface $v */
-                    $array[$property][] = $v->toArray();
+                    if ( is_object($v) ) {
+                        /* @var ArrayableInterface $v */
+                        $array[$property][] = $v->toArray();
+                    } else {
+                        $array[$property][] = $v;
+                    }
                 }
             }
         }
@@ -376,6 +388,24 @@ class Pass implements PassInterface
     public function getImages()
     {
         return $this->images;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addLocalization ( LocalizationInterface $localization )
+    {
+        $this->localizations[] = $localization;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLocalizations ()
+    {
+        return $this->localizations;
     }
 
     /**
@@ -688,7 +718,7 @@ class Pass implements PassInterface
     {
         return $this->organizationName;
     }
-    
+
 	/**
      * {@inheritdoc}
      */
@@ -706,7 +736,7 @@ class Pass implements PassInterface
     {
         return $this->expirationDate;
     }
-    
+
     /**
      * {@inheritdoc}
      */
