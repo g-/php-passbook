@@ -18,19 +18,22 @@ class Localization implements LocalizationInterface
 {
     /**
      * Language of the localization
+     *
      * @var string
      */
     protected $language;
 
     /**
      * Localized images
-     * @var array
+     *
+     * @var ImageInterface[]
      */
     protected $images = array();
 
     /**
      * Localized texts (token=>value)
-     * @var array
+     *
+     * @var string[]
      */
     protected $strings = array();
 
@@ -42,7 +45,7 @@ class Localization implements LocalizationInterface
     /**
      * {@inheritdoc}
      */
-    public function setLanguage ( $language )
+    public function setLanguage($language)
     {
         $this->language = $language;
     }
@@ -50,7 +53,7 @@ class Localization implements LocalizationInterface
     /**
      * {@inheritdoc}
      */
-    public function getLanguage ()
+    public function getLanguage()
     {
         return $this->language;
     }
@@ -58,7 +61,7 @@ class Localization implements LocalizationInterface
     /**
      * {@inheritdoc}
      */
-    public function addString ( $token , $value )
+    public function addString($token, $value)
     {
         $this->strings[$token] = $value;
 
@@ -68,9 +71,9 @@ class Localization implements LocalizationInterface
     /**
      * {@inheritdoc}
      */
-    public function addStrings ( array $strings )
+    public function addStrings(array $strings)
     {
-        $this->strings = array_merge(  $this->strings  , $strings );
+        $this->strings = array_merge($this->strings, $strings);
 
         return $this;
     }
@@ -78,21 +81,21 @@ class Localization implements LocalizationInterface
     /**
      * {@inheritdoc}
      */
-    public function getStrings ()
+    public function getStrings()
     {
-       return $this->strings;
+        return $this->strings;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getStringsFileOutput ()
+    public function getStringsFileOutput()
     {
         $output = '';
-        foreach ( $this->strings as $token=>$value )
-        {
-            $output .= '"'.$token.'" = "'.$value.'";'.PHP_EOL;
+        foreach ($this->strings as $token => $value) {
+            $output .= '"' . $token . '" = "' . $value . '";' . PHP_EOL;
         }
+
         return $output;
     }
 

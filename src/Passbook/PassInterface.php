@@ -265,14 +265,14 @@ interface PassInterface extends ArrayableInterface
      */
     public function getOrganizationName();
 
-
     /**
-     * {@inheritdoc}
+     * @param LocalizationInterface $localization
+     *
+     * @return PassInterface
      */
     public function addLocalization(LocalizationInterface $localization);
 
     /**
-     * {@inheritdoc}
      * @return LocalizationInterface[]
      */
     public function getLocalizations();

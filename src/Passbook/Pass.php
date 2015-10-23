@@ -12,13 +12,14 @@
 namespace Passbook;
 
 use DateTime;
-use Passbook\Pass\Structure;
-use Passbook\Pass\LocalizationInterface;
-use Passbook\Pass\StructureInterface;
-use Passbook\Pass\BeaconInterface;
-use Passbook\Pass\LocationInterface;
+use Passbook\Pass\Barcode;
 use Passbook\Pass\BarcodeInterface;
+use Passbook\Pass\BeaconInterface;
 use Passbook\Pass\ImageInterface;
+use Passbook\Pass\LocalizationInterface;
+use Passbook\Pass\LocationInterface;
+use Passbook\Pass\Structure;
+use Passbook\Pass\StructureInterface;
 
 /**
  * Pass
@@ -33,6 +34,7 @@ class Pass implements PassInterface
      * Serial number that uniquely identifies the pass.
      * No two passes with the same pass type identifier
      * may have the same serial number.
+     *
      * @var string
      */
     protected $serialNumber;
@@ -40,6 +42,7 @@ class Pass implements PassInterface
     /**
      * Brief description of the pass,
      * used by the iOS accessibility technologies.
+     *
      * @var string
      */
     protected $description;
@@ -47,30 +50,35 @@ class Pass implements PassInterface
     /**
      * Version of the file format.
      * The value must be 1.
+     *
      * @var int
      */
     protected $formatVersion = 1;
 
     /**
      * Pass type
+     *
      * @var string
      */
     protected $type;
 
     /**
      * Pass structure
+     *
      * @var Structure
      */
     protected $structure;
 
     /**
      * Pass images
+     *
      * @var ImageInterface[]
      */
     protected $images = array();
 
     /**
      * Beacons where the pass is relevant.
+     *
      * @var array
      */
     protected $beacons = array();
@@ -78,6 +86,7 @@ class Pass implements PassInterface
     /**
      * A list of iTunes Store item identifiers
      * (also known as Adam IDs) for the associated apps.
+     *
      * @var int[]
      */
     protected $associatedStoreIdentifiers = array();
@@ -85,19 +94,22 @@ class Pass implements PassInterface
     /**
      * Locations where the pass is relevant.
      * For example, the location of your store.
+     *
      * @var array
      */
     protected $locations = array();
 
     /**
      * List of localizations
-     * @var array
+     *
+     * @var LocalizationInterface[]
      */
     protected $localizations = array();
 
     /**
      * Date and time when the pass becomes relevant.
      * For example, the start time of a movie.
+     *
      * @var \DateTime
      */
     protected $relevantDate;
@@ -126,30 +138,35 @@ class Pass implements PassInterface
 
     /**
      * Background color of the pass, specified as an CSS-style RGB triple.
+     *
      * @var string rgb(23, 187, 82)
      */
     protected $backgroundColor;
 
     /**
      * Foreground color of the pass, specified as a CSS-style RGB triple.
+     *
      * @var string rgb(100, 10, 110)
      */
     protected $foregroundColor;
 
     /**
      * Color of the label text, specified as a CSS-style RGB triple.
+     *
      * @var string rgb(255, 255, 255)
      */
     protected $labelColor;
 
     /**
      * Text displayed next to the logo on the pass.
+     *
      * @var string
      */
     protected $logoText;
 
     /**
      * If true, the strip image is displayed without a shine effect.
+     *
      * @var string The default value is false
      */
     protected $suppressStripShine;
@@ -157,6 +174,7 @@ class Pass implements PassInterface
     /**
      * The authentication token to use with the web service.
      * The token must be 16 characters or longer.
+     *
      * @var string
      */
     protected $authenticationToken;
@@ -164,48 +182,56 @@ class Pass implements PassInterface
     /**
      * The URL of a web service that conforms to the API described in Passbook Web Service Reference.
      * http://developer.apple.com/library/ios/documentation/PassKit/Reference/PassKit_WebService/WebService.html#//apple_ref/doc/uid/TP40011988
+     *
      * @var string
      */
     protected $webServiceURL;
 
     /**
      * Pass type identifier
+     *
      * @var string
      */
     protected $passTypeIdentifier;
 
     /**
      * Team identifier
+     *
      * @var string
      */
     protected $teamIdentifier;
 
     /**
      * Organization name
+     *
      * @var string
      */
     protected $organizationName;
 
     /**
      * Date and time when the pass expires.
+     *
      * @var \DateTime
      */
     protected $expirationDate;
 
-	/**
-     * Indicates that the pass is void—for example, a one time use coupon that has been redeemed. The default value is false.
+    /**
+     * Indicates that the pass is void—for example, a one time use coupon that has been redeemed. The default value is
+     * false.
+     *
      * @var boolean
      */
     protected $voided;
 
-	/**
-	 *
-	 * A URL to be passed to the associated app when launching it.
-	 * The app receives this URL in the application:didFinishLaunchingWithOptions: and application:handleOpenURL: methods of its app delegate.
-	 * If this key is present, the associatedStoreIdentifiers key must also be present.
-	 * @var string
-	 */
-	protected $appLaunchURL;
+    /**
+     *
+     * A URL to be passed to the associated app when launching it.
+     * The app receives this URL in the application:didFinishLaunchingWithOptions: and application:handleOpenURL:
+     * methods of its app delegate. If this key is present, the associatedStoreIdentifiers key must also be present.
+     *
+     * @var string
+     */
+    protected $appLaunchURL;
 
     public function __construct($serialNumber, $description)
     {
@@ -249,9 +275,9 @@ class Pass implements PassInterface
             'associatedStoreIdentifiers',
         );
         foreach ($properties as $property) {
-            $method = 'is'.ucfirst($property);
+            $method = 'is' . ucfirst($property);
             if (!method_exists($this, $method)) {
-                $method = 'get'.ucfirst($property);
+                $method = 'get' . ucfirst($property);
             }
             $val = $this->$method();
             if ($val instanceof \DateTime) {
@@ -279,6 +305,7 @@ class Pass implements PassInterface
         if ($this->getAssociatedStoreIdentifiers()) {
             $array['associatedStoreIdentifiers'] = $this->getAssociatedStoreIdentifiers();
         }
+
         return $array;
     }
 
@@ -393,7 +420,7 @@ class Pass implements PassInterface
     /**
      * {@inheritdoc}
      */
-    public function addLocalization ( LocalizationInterface $localization )
+    public function addLocalization(LocalizationInterface $localization)
     {
         $this->localizations[] = $localization;
 
@@ -403,7 +430,7 @@ class Pass implements PassInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocalizations ()
+    public function getLocalizations()
     {
         return $this->localizations;
     }
@@ -719,7 +746,7 @@ class Pass implements PassInterface
         return $this->organizationName;
     }
 
-	/**
+    /**
      * {@inheritdoc}
      */
     public function setExpirationDate(\DateTime $expirationDate)
@@ -755,7 +782,7 @@ class Pass implements PassInterface
         return $this->voided;
     }
 
-	/**
+    /**
      * {@inheritdoc}
      */
     public function setAppLaunchURL($appLaunchURL)

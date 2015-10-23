@@ -30,23 +30,24 @@ interface LocalizationInterface
      */
     public function getLanguage();
 
-
     /**
      * Adds a translation for a token. This token has to be used as value or label of a Field.
      *
      * @param string $token
      * @param string $value
+     *
      * @return LocalizationInterface
      */
-    public function addString ($token, $value);
+    public function addString($token, $value);
 
     /**
      * Adds a list of tokens and their localized values.
      *
      * @param array $strings
+     *
      * @return LocalizationInterface
      */
-    public function addStrings (array $strings);
+    public function addStrings(array $strings);
 
     /**
      * Returns the list of all added translations.
@@ -64,15 +65,17 @@ interface LocalizationInterface
      *
      * @return string
      */
-    public function getStringsFileOutput ();
+    public function getStringsFileOutput();
 
     /**
-     * {@inheritdoc}
+     * @param ImageInterface $image
+     *
+     * @return LocalizationInterface
      */
     public function addImage(ImageInterface $image);
 
     /**
-     * {@inheritdoc}
+     * @return ImageInterface[]
      */
     public function getImages();
 }
